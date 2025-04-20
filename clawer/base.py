@@ -18,22 +18,21 @@ class BaseClawer(object):
         if not os.path.isdir(cve_dir):
             os.makedirs(cve_dir)
         file_path = self.gen_data_file(cve_dir)
-        with open(file_path, 'w') as f:
+        with open(file_path, 'w', encoding='utf8') as f:
             f.write(data)
         pass
 
     def gen_data_file(self, cve_dir: str) -> str:
-        data_file = "{}_{}.txt".format(self._name, self._get_time_str())
+        data_file = "{}_{}.html".format(self._name, self._get_time_str())
         file_path = os.path.join(cve_dir, data_file)
         if not os.path.isfile(file_path):
             return file_path
         index = 1
         while True:
-            data_file = "{}_{}_{}.txt".format(self._name, self._get_time_str(), index)
+            data_file = "{}_{}_{}.html".format(self._name, self._get_time_str(), index)
             file_path = os.path.join(cve_dir, data_file)
             if not os.path.isfile(file_path):
                 return file_path
-            path = os.path.join(cve_dir, data_file)
 
     def run(self, cve_id):
         """
@@ -45,4 +44,4 @@ class BaseClawer(object):
 
 if __name__ == '__main__':
     obj = BaseClawer("../data")
-    obj.run("CVE-2023-2564")
+    obj.run("CVE-2022-40664")
