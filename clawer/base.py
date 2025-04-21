@@ -29,6 +29,7 @@ class BaseClawer(object):
             return file_path
         index = 1
         while True:
+            index += 1
             data_file = "{}_{}_{}.html".format(self._name, self._get_time_str(), index)
             file_path = os.path.join(cve_dir, data_file)
             if not os.path.isfile(file_path):

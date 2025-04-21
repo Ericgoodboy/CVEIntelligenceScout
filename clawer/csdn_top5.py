@@ -1,10 +1,13 @@
 import requests
+import tqdm
+
 from clawer.base import BaseClawer
 import urllib.parse
 import time
 import logging
 
 log = logging.getLogger(__name__)
+
 
 def crawl_csdn_top5(keyword):
     # 构造搜索URL
@@ -20,7 +23,7 @@ def crawl_csdn_top5(keyword):
     }
 
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=3)
         response.raise_for_status()
 
         ret = response.json()
@@ -42,7 +45,7 @@ class CsdnTop5(BaseClawer):
 
     def run(self, cve_id: str):
         results = crawl_csdn_top5(cve_id)
-        for item in results:
+        for item in tqdm.tqdm(results):
             time.sleep(1)
             try:
                 ret = requests.get(item['url'], headers={
@@ -50,11 +53,13 @@ class CsdnTop5(BaseClawer):
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                                   "AppleWebKit/537.36 (KHTML, like Gecko) "
                                   "Chrome/91.0.4472.124 Safari/537.36"
-                }, timeout=10)
+                }, timeout=3)
                 if ret.status_code == 200:
                     self._save(cve_id, ret.text)
                 else:
                     pass
+            except requests.Timeout:
+                print('请求超时')
             except Exception as e:
                 log.error(f"请求失败: {str(e)}")
 

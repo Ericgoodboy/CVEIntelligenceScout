@@ -1,6 +1,6 @@
 import time
 import tqdm
-from clawer import cve_detail, csdn_top5
+from clawer import cve_detail, csdn_top5, cve_org_refer
 
 
 def print_hi(name):
@@ -10,7 +10,8 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    clawer_list = [cve_detail.CveDetail("./data"), csdn_top5.CsdnTop5("./data")]
+    # clawer_list = [cve_detail.CveDetail("./data"), csdn_top5.CsdnTop5("./data")]
+    clawer_list = [cve_org_refer.CveOrgRefer("./data")]
     cve_id_list = """
 CVE-2022-40664
 CVE-2021-24404
